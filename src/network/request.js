@@ -3,8 +3,8 @@ import axios from 'axios'
 //创建请求实例
 export function request(config){
   const instance = axios.create({
-    baseURL: 'http://123.207.32.32:8000',
-    timeout: 2000
+    baseURL: '',
+    timeout: 1000
   })
 
   //请求拦截
