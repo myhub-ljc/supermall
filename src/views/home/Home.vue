@@ -1,13 +1,18 @@
 <template>
   <div id="home">
     <nav-bar class="homenavbar"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view/>
-    <tab-control class="tab-control" 
-                 :titles="['流行', '新款', '精选']"
-                 @tabClick="tabClick"/>
-    <goods-list :goods="goods[currentType].list"/>
+
+    <scroll class="content" ref="scroll" :probe-type="3"> 
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control class="tab-control" 
+                  :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick"/>
+      <goods-list :goods="goods[currentType].list"/>
+    </scroll>
+
+    <back-top @click.native="backClick"/>
   </div>
 </template>
 
@@ -19,6 +24,8 @@
   import NavBar from 'components/common/navbar/NavBar'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
+  import Scroll from 'components/common/scroll/Scroll'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from 'network/home'
 
@@ -30,7 +37,9 @@ export default {
     FeatureView,
     NavBar,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -52,6 +61,7 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+  
   methods: {
     /**
      * 事件监听相关的方法
@@ -67,6 +77,9 @@ export default {
         case 2:
           this.currentType = 'sell'
       }
+    },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
     },
 
     /**
@@ -90,9 +103,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #home{
   padding-top: 44px;
+  position: relative;
+  height: 100vh;
 }
 .homenavbar{
   background: #ff8198;
@@ -107,5 +122,13 @@ export default {
   position: sticky;
   top: 44px;
   z-index: 9;
+}
+
+.content{
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>
