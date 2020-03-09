@@ -5,6 +5,10 @@
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
+      <detail-goods-info :detail-info="detailInfo"/>
+      <detail-params-info :param-info="itemParams"/>
+      <detail-comment-info :comment-info="commentInfo"/>
+      <goods-list :goods="recommends"/>
     </scroll>
   </div>
 </template>
@@ -14,9 +18,14 @@
   import DetailSwiper from 'views/detail/childComps/DetailSwiper'
   import DetailBaseInfo from 'views/detail/childComps/DetailBaseInfo'
   import DetailShopInfo from 'views/detail/childComps/DetailShopInfo'
-  import Scroll from 'components/common/scroll/Scroll'
+  import DetailGoodsInfo from 'views/detail/childComps/DetailGoodsInfo'
+  import DetailParamsInfo from 'views/detail/childComps/DetailParamsInfo'
+  import DetailCommentInfo from 'views/detail/childComps/DetailCommentInfo'
 
-  import {getDetail, Goods, Shop} from 'network/detail'
+  import Scroll from 'components/common/scroll/Scroll'
+  import GoodsList from 'components/content/goods/GoodsList'
+
+  import {getDetail, Goods, Shop, getRecommend} from 'network/detail'
 
 export default {
   name: 'Detail',
@@ -25,25 +34,44 @@ export default {
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
-    Scroll
+    DetailGoodsInfo,
+    DetailParamsInfo,
+    DetailCommentInfo,
+
+    Scroll,
+    GoodsList
   },
   data() {
     return {
       iid: null,
       topImages: [],
       goods: {},
-      shop: {}
+      shop: {},
+      detailInfo: {},
+      itemParams: {},
+      commentInfo: {},
+      recommends: []
     }
   },
   created() {
     this.iid = this.$route.params.iid
 
     getDetail(this.iid).then(res => {
-      console.log(res)
+      //console.log(res)
       const data = res.result
       this.topImages = data.itemInfo.topImages
       this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
       this.shop = new Shop(data.shopInfo)
+      this.detailInfo = data.detailInfo
+      this.itemParams = data.itemParams
+      if(data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0]
+      }
+    })
+
+    getRecommend().then(res => {
+      console.log(res)
+      this.recommends = res.data.list
     })
   }
 }
