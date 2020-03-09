@@ -1,6 +1,6 @@
 <template>
   <div class="detail-params-info">
-    <table class="detail-params-info-table" v-for="(item, index) in paramInfo.rule.table" :key="index">
+    <table class="detail-params-info-table" v-for="(item, index) in paramInfo.rule.tables" :key="index">
       <tr v-for="(tr, indey) in item" :key="indey">
         <td v-for="(td, indez) in tr" :key="indez">{{td}}</td>
       </tr>

@@ -1,14 +1,17 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"/>
-    <scroll class="content">
+    <detail-nav-bar class="detail-nav" @detailClick="titleClick" ref="nav"/>
+    <scroll class="content" 
+            @scroll="contentScroll" 
+            ref="scroll"
+            :probe-type="3">
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo"/>
-      <detail-params-info :param-info="itemParams"/>
-      <detail-comment-info :comment-info="commentInfo"/>
-      <goods-list :goods="recommends"/>
+      <detail-params-info ref="params" :param-info="itemParams"/>
+      <detail-comment-info ref="comment" :comment-info="commentInfo"/>
+      <goods-list ref="recommend" :goods="recommends"/>
     </scroll>
   </div>
 </template>
@@ -50,7 +53,9 @@ export default {
       detailInfo: {},
       itemParams: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      themeTopYs: [],
+      currentIndex: 0
     }
   },
   created() {
@@ -67,12 +72,36 @@ export default {
       if(data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0]
       }
+
+      this.$nextTick(() => {
+        this.themeTopYs = []
+        this.themeTopYs.push(0)
+        this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+        this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
+        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+      })
     })
 
     getRecommend().then(res => {
-      console.log(res)
+      //console.log(res)
       this.recommends = res.data.list
     })
+  },
+  methods: {
+    titleClick(index) {
+      //console.log(index)
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 500)
+    },
+    contentScroll(position) { 
+      const positionY = -position.y
+      let length = this.themeTopYs.length
+      for(let i = 0; i < length; i++){
+        if(this.currentIndex !== i && ((i < length - 1 && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1]) || ( i === length - 1 && positionY >= this.themeTopYs[i]))){
+          this.currentIndex = i
+          this.$refs.nav.currentIndex = this.currentIndex
+        }
+      }
+    }
   }
 }
 </script>
