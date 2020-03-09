@@ -1,7 +1,6 @@
 <template>
   <div id="home">
     <nav-bar class="homenavbar"><div slot="center">购物街</div></nav-bar>
-
     <scroll class="content" 
             ref="scroll" 
             :probe-type="3" 
