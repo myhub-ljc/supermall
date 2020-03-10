@@ -13,6 +13,8 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo"/>
       <goods-list ref="recommend" :goods="recommends"/>
     </scroll>
+    <detail-bottom-bar/>
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -24,6 +26,8 @@
   import DetailGoodsInfo from 'views/detail/childComps/DetailGoodsInfo'
   import DetailParamsInfo from 'views/detail/childComps/DetailParamsInfo'
   import DetailCommentInfo from 'views/detail/childComps/DetailCommentInfo'
+  import DetailBottomBar from 'views/detail/childComps/DetailBottomBar'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import Scroll from 'components/common/scroll/Scroll'
   import GoodsList from 'components/content/goods/GoodsList'
@@ -40,7 +44,9 @@ export default {
     DetailGoodsInfo,
     DetailParamsInfo,
     DetailCommentInfo,
-
+    DetailBottomBar,
+    BackTop,
+    
     Scroll,
     GoodsList
   },
@@ -55,7 +61,10 @@ export default {
       commentInfo: {},
       recommends: [],
       themeTopYs: [],
-      currentIndex: 0
+      currentIndex: 0,
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     }
   },
   created() {
@@ -92,6 +101,9 @@ export default {
       //console.log(index)
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 500)
     },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
     contentScroll(position) { 
       const positionY = -position.y
       let length = this.themeTopYs.length
@@ -101,6 +113,7 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+      this.isShowBackTop = (-position.y) > 1000
     }
   }
 }
@@ -119,6 +132,6 @@ export default {
   background-color: #fff;
 }
 .content{
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 49px);
 }
 </style>
