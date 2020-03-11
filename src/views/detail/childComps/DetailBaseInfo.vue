@@ -1,5 +1,5 @@
 <template>
-  <div class="data-base-info">
+  <div v-if="Object.keys(goods).length !== 0" class="data-base-info">
     <!--商品title-->
     <div class="data-base-title">
       {{goods.title}}
