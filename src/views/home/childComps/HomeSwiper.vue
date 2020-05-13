@@ -11,36 +11,36 @@
 </template>
 
 <script>
-   import {Swiper, SwiperItem} from 'components/common/swiper'
+  import {Swiper, SwiperItem} from 'components/common/swiper'
 
-export default {
-  name: 'HomeSwiper',
-  props: {
-    banners: {
-      type: Array,
-      default() {
-        return []
+  export default {
+    name: 'HomeSwiper',
+    props: {
+      banners: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
+    data() {
+      return {
+        isLoad: false
+      }
+    },
+    components: {
+      Swiper,
+      SwiperItem
+    },
+    methods: {
+      imageLoad() {
+      if(!this.isLoad){
+          this.$emit('swiperImageload')
+          this.isLoad = true 
+      }
       }
     }
-  },
-  data() {
-    return {
-      isLoad: false
-    }
-  },
-  components: {
-    Swiper,
-    SwiperItem
-  },
-  methods: {
-    imageLoad() {
-     if(!this.isLoad){
-        this.$emit('swiperImageload')
-        this.isLoad = true 
-     }
-    }
   }
-}
 </script>
 
 <style>

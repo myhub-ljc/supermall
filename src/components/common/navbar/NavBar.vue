@@ -7,16 +7,15 @@
 </template>
 
 <script>
-export default {
-  name: "NavBar"
-}
+  export default {
+    name: "NavBar"
+  }
 </script>
 
 <style scoped>
 .navbar{
   display: flex;
-  line-height: 44px;
-  text-align: center;
+  line-height: 46px;
 }
 .left, .right{
   width: 30px;
