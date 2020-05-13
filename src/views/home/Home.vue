@@ -14,7 +14,7 @@
                   :titles="['流行', '新款', '精选']"
                   @tabClick="tabClick"
                   ref="tabControl"/>
-      <goods-list :goods="goods[currentType].list"/>
+      <goods-list :goods="showGoods"/>
     </scroll>
 
     <back-top @click.native="backClick" v-show="isShowBackTop"/>
@@ -69,6 +69,12 @@
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
     },
+    computed: {
+      showGoods() {
+        //利用计算属性  来进行一些提取
+        return this.goods[this.currentType].list
+      }
+    },
     mounted() {
       
     },
@@ -113,8 +119,10 @@
     },
       
       getHomeGoods(type) {
+        //用来记录数据到了第几页
         const page = this.goods[type].page + 1
         getHomeGoods(type, page).then(res => {
+          //将一个数组的数据放入到另外一个数组中(当然也可以for循环)
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page += 1
           this.$refs.scroll.finishPullUp()
@@ -139,7 +147,7 @@
   left: 0;
   right: 0;
   z-index: 9;
-}
+} 
 
 .content{
   position: absolute;
