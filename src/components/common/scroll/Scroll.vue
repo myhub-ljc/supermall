@@ -27,18 +27,22 @@
       }
     },
     mounted() {
+      //创建better-scroll对象
       this.scroll = new BScroll(this.$refs.wrapper, {
-        click: true,
-        probeType: this.probeType,
-        pullUpLoad: this.pullUpLoad
+        click: true,//使得其里面包含的组件点击事件可以点击
+        probeType: this.probeType, //监听鼠标滚动
+        pullUpLoad: this.pullUpLoad //上拉加载更多
       })
 
+      //监听鼠标滚动的区域
       if(this.probeType === 2 || this.probeType === 3){
         this.scroll.on('scroll', (position) =>  {
         this.$emit('scroll', position)
       })
+      this.scroll.refresh()
       }
 
+    //监听上拉加载更多事件
     if(this.pullUpLoad) {
         this.scroll.on('pullingUp', () => {
         this.$emit('pullingUp')
@@ -51,6 +55,9 @@
       },
       finishPullUp() {
         this.scroll && this.scroll.finishPullUp()
+      },
+      refresh() {
+        this.scroll && this.scroll.refresh()
       }
     }
   }

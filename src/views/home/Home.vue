@@ -33,6 +33,7 @@
   import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from 'network/home.js'
+  import {debounce} from 'common/utils.js'
 
   export default {
     name: 'Home',
@@ -76,12 +77,16 @@
       }
     },
     mounted() {
-      
+      const refresh = debounce(this.$refs.scroll.refresh, 1000)
+      this.$bus.$on('itemImgLoad', () => {
+        refresh()
+      })
     },
     methods: {
       /**
        * 事件监听相关的方法
        */
+      
       tabClick(index) {
         switch(index){
           case 0:
@@ -107,7 +112,7 @@
       swiperImageload() {
         this.tabOffsetTop = this.$refs.tabControl.$el.OffsetTop
       },
-
+      
       /**
        * 网络请求相关的方法
        */

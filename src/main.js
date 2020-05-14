@@ -7,6 +7,8 @@ import VueLazyLoad from 'vue-lazyload'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$bus = new Vue()
+
 //解决移动端300ms延迟
 FastClick.attach(document.body)
 
