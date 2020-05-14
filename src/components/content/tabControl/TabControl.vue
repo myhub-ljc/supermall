@@ -46,9 +46,9 @@ export default {
 }
 .active span{
   padding: 4px;
-  border-bottom: 2px solid deeppink;
+  border-bottom: 2px solid#ff5777;
 }
 .active{
-  color: deeppink;
+  color: #ff5777;
 }
 </style>

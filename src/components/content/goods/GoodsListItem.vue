@@ -59,7 +59,7 @@ export default {
   margin-bottom: 3px;
 }
 .goods-info .price{
-  color: deeppink;
+  color: #ff5777;
   margin-right: 20px;
 }
 .goods-info .collect{

@@ -29,7 +29,7 @@
   import NavBar from 'components/common/navbar/NavBar.vue'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
-  import Scroll from 'components/common/scroll/Scroll'
+  import Scroll from 'components/common/scroll/Scroll.vue'
   import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeGoods} from 'network/home.js'
@@ -151,7 +151,7 @@
 
 .content{
   position: absolute;
-  top: 44px;
+  top: 46px;
   bottom: 49px;
   left: 0;
   right: 0;
