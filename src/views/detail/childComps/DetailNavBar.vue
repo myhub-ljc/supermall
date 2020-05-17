@@ -44,13 +44,17 @@ export default {
 <style>
 .title{
   display: flex;
+  text-align: center;
   font-size: 13px;
 }
 .title-item{
   flex: 1;
 }
 .active{
-  color: deeppink;
+  color: #ff8198;
+}
+.back{
+  margin-left: 10px;
 }
 .back img{
   margin-top: 10px;

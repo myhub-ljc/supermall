@@ -63,7 +63,8 @@
         currentType: 'pop',
         isShowBackTop: false,
         tabOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY: 0
       }
     },
     created() {
@@ -86,6 +87,13 @@
       this.$bus.$on('itemImgLoad', () => {
         refresh()
       })
+    },
+    activited() {
+      this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      this.$refs.scroll.refresh()
+    },
+    deactivited() {
+      this.saveY = this.$refs.scroll.getScrollY()
     },
     methods: {
       /**
