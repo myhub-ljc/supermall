@@ -34,8 +34,9 @@
     },
     methods: {
       imageLoad() {
+      //只需要返回一次高度就可以了
       if(!this.isLoad){
-          this.$emit('swiperImageload')
+          this.$emit('swiperImageLoad')
           this.isLoad = true 
       }
       }

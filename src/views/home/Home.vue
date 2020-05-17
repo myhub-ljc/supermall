@@ -1,19 +1,23 @@
 <template>
   <div id="home">
     <nav-bar class="homenavbar"><div slot="center">购物街</div></nav-bar>
+    <tab-control :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick"
+                  ref="tabControl1"
+                  class="tab-control"
+                  v-show="isTabFixed"/>
     <scroll class="content" 
             ref="scroll" 
             :probe-type="3" 
             @scroll="contentScroll"
             :pull-up-loda="true"
             @pullingUp="loadMore"> 
-      <home-swiper :banners="banners" @swiperImageload="swiperImageload"/>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control class="tab-control" 
-                  :titles="['流行', '新款', '精选']"
+      <tab-control :titles="['流行', '新款', '精选']"
                   @tabClick="tabClick"
-                  ref="tabControl"/>
+                  ref="tabControl2"/>
       <goods-list :goods="showGoods"/>
     </scroll>
 
@@ -77,6 +81,7 @@
       }
     },
     mounted() {
+      //图片加载完成的事件监听
       const refresh = debounce(this.$refs.scroll.refresh, 1000)
       this.$bus.$on('itemImgLoad', () => {
         refresh()
@@ -98,19 +103,23 @@
           case 2:
             this.currentType = 'sell'
         }
+        this.$refs.tabControl1.currentIndex = index
+        this.$refs.tabControl2.currentIndex = index
       },
       backClick() {
         this.$refs.scroll.scrollTo(0, 0)
       },
       contentScroll(position) {
+        //判断backtop是否显示
         this.isShowBackTop = (-position.y) > 1000
+        //决定tabcontrol是否吸顶(position:fixed)
         this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       loadMore() {
         this.getHomeGoods(this.currentType)
       },
-      swiperImageload() {
-        this.tabOffsetTop = this.$refs.tabControl.$el.OffsetTop
+      swiperImageLoad() {
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
       
       /**
@@ -130,6 +139,7 @@
           //将一个数组的数据放入到另外一个数组中(当然也可以for循环)
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page += 1
+          //完成上拉加载更多
           this.$refs.scroll.finishPullUp()
         })
       }
@@ -139,9 +149,10 @@
 
 <style scoped>
 #home{
-  padding-top: 46px;
+  padding-top: 46px; 
   position: relative;
   height: 100vh;
+  overflow: hidden;
 }
 .homenavbar{
   background: #ff8198;
@@ -151,7 +162,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9;
+  z-index: 9; 
 } 
 
 .content{
@@ -161,4 +172,10 @@
   left: 0;
   right: 0;
 }
+
+.tab-control {
+  position: relative;
+  z-index: 9;
+}
+
 </style>
